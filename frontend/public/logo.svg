@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <defs>
+    <style>
+      .text { font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif; font-weight: bold; font-size: 60px; fill: #0ea5e9; }
+      .bubble-main { fill: #f87171; }
+      .bubble-small { fill: #34d399; }
+      .bubble-tiny { fill: #fbbf24; }
+    </style>
+  </defs>
+  
+  <!-- Bubbles background -->
+  <circle cx="150" cy="50" r="45" class="bubble-main" opacity="0.2" />
+  <circle cx="40" cy="30" r="15" class="bubble-small" opacity="0.8" />
+  <circle cx="260" cy="70" r="10" class="bubble-tiny" opacity="0.8" />
+  <path d="M50 40 Q 60 40 55 50" stroke="#34d399" stroke-width="3" fill="none" />
+  
+  <!-- Text -->
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" class="text">MeetUP</text>
+  
+  <!-- Chat icon overlay suggestion -->
+  <path d="M210 30 Q 230 30 230 50 Q 230 70 210 70 L 200 80 L 205 70 Q 190 70 190 50 Q 190 30 210 30" fill="#0ea5e9" opacity="0.2" />
+</svg>
