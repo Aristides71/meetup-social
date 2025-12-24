@@ -9,8 +9,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve arquivos estáticos do frontend (build)
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+const distPath = path.join(__dirname, '../frontend/dist');
+if (!require('fs').existsSync(distPath)) {
+  console.error(`ERRO CRÍTICO: Pasta do frontend não encontrada em: ${distPath}`);
+  console.error('Certifique-se de rodar "npm run build" na raiz ou no frontend antes de iniciar.');
+}
+app.use(express.static(distPath));
 
 const server = http.createServer(app);
 const io = new Server(server, {

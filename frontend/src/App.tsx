@@ -31,16 +31,14 @@ type ChatMessage = {
 
 // Configuração do Socket
 // Em produção (build), usa a mesma origem do site. Em dev, usa o IP local.
-const SOCKET_URL = import.meta.env.PROD ? window.location.origin : 'http://10.226.51.224:3001';
+const SOCKET_URL = import.meta.env.PROD ? window.location.origin : 'http://localhost:3001';
 
 const socket: Socket = io(SOCKET_URL, {
-  transports: ['websocket'], // Força websocket para evitar erros de polling em túneis
-  reconnectionAttempts: 10,
-  timeout: 20000,
-  autoConnect: true,
-  extraHeaders: {
-    "Bypass-Tunnel-Reminder": "true"
-  }
+  transports: ['websocket', 'polling'], // Fallback para polling se websocket falhar
+  autoConnect: false,
+  reconnection: true,
+  reconnectionAttempts: 5,
+  timeout: 10000,
 });
 
 // Helper para gerar avatar localmente (SVG Data URI)
