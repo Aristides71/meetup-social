@@ -45,7 +45,31 @@ const QUESTIONS = [
   { text: "Qual país é conhecido como a terra do sol nascente?", options: ["China", "Coreia do Sul", "Japão", "Tailândia"], correct: 2 },
   { text: "Quantos estados tem o Brasil?", options: ["24", "25", "26", "27"], correct: 2 },
   { text: "Qual é a cor da caixa preta dos aviões?", options: ["Preta", "Laranja", "Vermelha", "Amarela"], correct: 1 },
-  { text: "O que é um 'bit' em informática?", options: ["Um programa", "Uma peça do hardware", "Dígito binário", "Um vírus"], correct: 2 }
+  { text: "O que é um 'bit' em informática?", options: ["Um programa", "Uma peça do hardware", "Dígito binário", "Um vírus"], correct: 2 },
+  { text: "Quem descobriu o Brasil?", options: ["Pedro Álvares Cabral", "Cristóvão Colombo", "Vasco da Gama", "Fernão de Magalhães"], correct: 0 },
+  { text: "Qual é o maior oceano do mundo?", options: ["Atlântico", "Índico", "Pacífico", "Ártico"], correct: 2 },
+  { text: "Qual é o animal mais rápido do mundo?", options: ["Guepardo", "Leão", "Águia", "Falcão-peregrino"], correct: 3 },
+  { text: "Quantos continentes existem?", options: ["5", "6", "7", "8"], correct: 1 },
+  { text: "Qual é a moeda do Japão?", options: ["Dólar", "Euro", "Iene", "Won"], correct: 2 },
+  { text: "Quem é o rei do pop?", options: ["Elvis Presley", "Michael Jackson", "Prince", "Freddie Mercury"], correct: 1 },
+  { text: "Qual é o símbolo químico da água?", options: ["H2O", "CO2", "O2", "NaCl"], correct: 0 },
+  { text: "Em que ano começou a Segunda Guerra Mundial?", options: ["1914", "1939", "1945", "1918"], correct: 1 },
+  { text: "Qual é o menor país do mundo?", options: ["Mônaco", "Vaticano", "Malta", "San Marino"], correct: 1 },
+  { text: "Quem pintou a 'A Última Ceia'?", options: ["Michelangelo", "Leonardo da Vinci", "Rafael", "Donatello"], correct: 1 },
+  { text: "Qual é o maior país do mundo em área?", options: ["China", "EUA", "Rússia", "Canadá"], correct: 2 },
+  { text: "Quem foi o primeiro presidente do Brasil?", options: ["Getúlio Vargas", "Deodoro da Fonseca", "Dom Pedro II", "Juscelino Kubitschek"], correct: 1 },
+  { text: "Quantos jogadores tem um time de futebol em campo?", options: ["10", "11", "12", "9"], correct: 1 },
+  { text: "Qual a fórmula química do sal de cozinha?", options: ["H2O", "NaCl", "CO2", "O2"], correct: 1 },
+  { text: "Quem escreveu 'O Pequeno Príncipe'?", options: ["Antoine de Saint-Exupéry", "J.K. Rowling", "Machado de Assis", "Monteiro Lobato"], correct: 0 },
+  { text: "Qual é a montanha mais alta do mundo?", options: ["K2", "Everest", "Kilimanjaro", "Aconcágua"], correct: 1 },
+  { text: "Em que continente fica o Egito?", options: ["Ásia", "Europa", "África", "América"], correct: 2 },
+  { text: "Qual é a velocidade da luz?", options: ["300.000 km/s", "150.000 km/s", "1.000 km/s", "Som do trovão"], correct: 0 },
+  { text: "Quem é o autor da teoria da relatividade?", options: ["Isaac Newton", "Albert Einstein", "Galileu Galilei", "Nikola Tesla"], correct: 1 },
+  { text: "Qual é o metal líquido à temperatura ambiente?", options: ["Ferro", "Mercúrio", "Ouro", "Prata"], correct: 1 },
+  { text: "Quantos anos tem um século?", options: ["10", "50", "100", "1000"], correct: 2 },
+  { text: "Qual é a capital da Austrália?", options: ["Sydney", "Melbourne", "Canberra", "Brisbane"], correct: 2 },
+  { text: "Quem compôs a 9ª Sinfonia?", options: ["Mozart", "Bach", "Beethoven", "Chopin"], correct: 2 },
+  { text: "Qual é o idioma mais falado do mundo?", options: ["Inglês", "Mandarim", "Espanhol", "Hindi"], correct: 1 }
 ];
 
 const TRUTH_DARE = [

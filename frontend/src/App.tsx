@@ -87,6 +87,19 @@ function App() {
   // Location State
   const [searchLocation, setSearchLocation] = useState('');
   const [isLoadingLocais, setIsLoadingLocais] = useState(false);
+  
+  // Emoji State
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const EMOJIS = [
+    "😀", "😂", "🥰", "😎", "🤔", "😅", "😭", "😡", 
+    "👍", "👎", "❤️", "🔥", "🎉", "🍻", "👋", "👀",
+    "🥂", "🍔", "🍕", "🎵", "💃", "🕺", "📸", "✈️",
+    "🐶", "🐱", "🌟", "💡", "💪", "🙏", "💋", "💀"
+  ];
+
+  const addEmoji = (emoji: string) => {
+    setCurrentMessage(prev => prev + emoji);
+  };
 
   useEffect(() => {
     // Listeners de Conexão
@@ -498,7 +511,22 @@ function App() {
                   })}
               </div>
 
-              <div className="p-4 bg-white border-t border-gray-100 flex gap-2">
+              <div className="p-4 bg-white border-t border-gray-100 flex gap-2 relative">
+                  {/* Emoji Picker Popover */}
+                  {showEmojiPicker && (
+                      <div className="absolute bottom-16 left-4 bg-white shadow-xl rounded-xl p-2 grid grid-cols-4 gap-2 border border-gray-100 w-48 z-50">
+                          {EMOJIS.map(emoji => (
+                              <button key={emoji} onClick={() => addEmoji(emoji)} className="text-xl hover:bg-gray-100 p-1 rounded transition">
+                                  {emoji}
+                              </button>
+                          ))}
+                      </div>
+                  )}
+                  
+                  <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className="text-gray-500 hover:text-pink-600 text-xl px-2">
+                      😊
+                  </button>
+
                   <input 
                     type="text" 
                     className="flex-1 border border-gray-300 rounded-full px-4 py-2 outline-none focus:border-pink-500"
