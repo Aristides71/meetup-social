@@ -211,8 +211,9 @@ function App() {
     setIsLoadingLocais(true);
     showNotification("Buscando locais, aguarde um momento...");
     try {
-      // Em produção usa URL relativa (/api/locais), em dev usa IP fixo
-      const baseUrl = import.meta.env.PROD ? '' : 'http://10.226.51.224:3001';
+      // Em produção usa URL relativa (/api/locais), em dev usa IP fixo. 
+      // Se VITE_API_URL estiver definida (Mobile/Cloud), usa ela.
+      const baseUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3001');
       let url = `${baseUrl}/api/locais`;
       const params = new URLSearchParams();
       

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Social Spot</string>
+    <string name="title_activity_main">Social Spot</string>
+    <string name="package_name">com.socialspot.app</string>
+    <string name="custom_url_scheme">com.socialspot.app</string>
+</resources>
