@@ -124,7 +124,7 @@ function App() {
     // Listeners do Socket
     socket.on('app_joined', (user: User) => {
       setCurrentUser(user);
-      setCurrentScreen('locais');
+      setCurrentScreen('instructions');
       // Não busca automaticamente, espera usuário escolher
       // fetchLocais(); 
     });
