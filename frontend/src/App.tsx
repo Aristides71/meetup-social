@@ -588,6 +588,9 @@ function App() {
           </div>
         )}
 
+        {/* TELA DE INSTRUÇÕES */}
+        {currentScreen === 'instructions' && renderInstructions()}
+
         {/* LISTA DE LOCAIS */}
         {currentScreen === 'locais' && (
           <div className="flex flex-col gap-4">
