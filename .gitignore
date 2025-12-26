@@ -2,4 +2,7 @@ node_modules
 dist
 .env
 .DS_Store
-coverage
+*.exe
+backend/cloudflared.exe
+backend/node_modules
+frontend/node_modules

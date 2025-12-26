@@ -59,7 +59,7 @@ const generateAvatar = (name: string) => {
  };
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<'login' | 'locais' | 'room'>('login');
+  const [currentScreen, setCurrentScreen] = useState<'login' | 'locais' | 'room' | 'instructions'>('login');
   const [userName, setUserName] = useState('');
   const [userAvatar, setUserAvatar] = useState<string>('');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
