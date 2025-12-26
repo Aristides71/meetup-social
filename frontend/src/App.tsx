@@ -425,6 +425,40 @@ function App() {
       }
   };
 
+  const renderInstructions = () => {
+    return (
+      <div className="flex flex-col items-center justify-center mt-6 gap-6">
+        <h2 className="text-2xl font-bold text-gray-800">Como usar o Social Spot</h2>
+        <div className="bg-white p-6 rounded-xl shadow-sm w-full flex flex-col gap-4">
+          <div className="flex gap-3">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 text-xl font-bold flex-shrink-0">1</div>
+            <div>
+              <h3 className="font-bold text-lg">Encontre Locais</h3>
+              <p className="text-gray-600">Use sua localização ou digite um bairro para encontrar lugares.</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 text-xl font-bold flex-shrink-0">2</div>
+            <div>
+              <h3 className="font-bold text-lg">Faça Check-in</h3>
+              <p className="text-gray-600">Selecione um local para entrar na sala e interagir com outras pessoas.</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 text-xl font-bold flex-shrink-0">3</div>
+            <div>
+              <h3 className="font-bold text-lg">Interaja</h3>
+              <p className="text-gray-600">Converse com pessoas ou jogue jogos como Quiz Trivia.</p>
+            </div>
+          </div>
+          <button onClick={() => setCurrentScreen('locais')} className="w-full bg-pink-600 text-white py-3 rounded-lg font-semibold hover:bg-pink-700 transition mt-4">
+            Vamos lá!
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 font-sans text-gray-900 pb-20">
       {/* Header */}
