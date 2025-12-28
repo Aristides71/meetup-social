@@ -203,13 +203,13 @@ app.get('/api/locais', async (req, res) => {
           const tags = el.tags || {};
           
           let placeType = 'Local';
-          if (tags.amenity === 'nightclub') placeType = 'Boate';
-          else if (tags.amenity === 'pub' || tags.amenity === 'bar') placeType = 'Bar';
-          else if (tags.amenity === 'restaurant') placeType = 'Restaurante';
-          else if (tags.amenity === 'cafe') placeType = 'Café';
+          if (tags.amenity === 'nightclub' || tags.amenity === 'social_club') placeType = 'Boate';
+          else if (['pub', 'bar', 'biergarten'].includes(tags.amenity)) placeType = 'Bar';
+          else if (['restaurant', 'fast_food', 'food_court', 'bistro'].includes(tags.amenity)) placeType = 'Restaurante';
+          else if (['cafe', 'ice_cream'].includes(tags.amenity)) placeType = 'Café';
           else if (tags.leisure === 'fitness_centre') placeType = 'Academia';
           else if (tags.leisure === 'park') placeType = 'Parque';
-          else if (tags.shop === 'mall') placeType = 'Shopping Center';
+          else if (tags.shop === 'mall' || tags.shop === 'department_store') placeType = 'Shopping Center';
           else if (tags.amenity) placeType = tags.amenity; // Fallback
 
           let description = 'Um ótimo lugar para socializar.';

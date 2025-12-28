@@ -221,15 +221,23 @@ function App() {
       const params = new URLSearchParams();
       
       if (lat && lng) {
-          params.append('lat', lat.toString());
-          params.append('lng', lng.toString());
-      } else if (query) {
-          params.append('search', query);
-      }
-      
-      if (params.toString()) {
-          url += `?${params.toString()}`;
-      }
+        params.append('lat', lat.toString());
+        params.append('lng', lng.toString());
+    } else if (query) {
+        params.append('search', query);
+    }
+    
+    // Adiciona filtros de tipo e palavra-chave
+    if (searchType && searchType !== 'all') {
+        params.append('type', searchType);
+    }
+    if (searchKeyword.trim()) {
+        params.append('keyword', searchKeyword);
+    }
+    
+    if (params.toString()) {
+        url += `?${params.toString()}`;
+    }
 
       const res = await fetch(url, {
         headers: {
