@@ -155,6 +155,7 @@ app.get('/api/locais', async (req, res) => {
       else if (type === 'cafe') typeFilter = '["amenity"="cafe"]';
       else if (type === 'gym') typeFilter = '["leisure"="fitness_centre"]';
       else if (type === 'park') typeFilter = '["leisure"="park"]';
+      else if (type === 'shopping') typeFilter = '["shop"="mall"]';
       else {
           // Default: busca tudo se não tiver tipo específico
           // Mas vamos construir queries separadas para amenity e leisure se for "todos"
@@ -181,6 +182,10 @@ app.get('/api/locais', async (req, res) => {
           // Grupo 2: Leisure (Academia, Parque)
           queries.push(`node["leisure"~"fitness_centre|park"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
           queries.push(`way["leisure"~"fitness_centre|park"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+
+          // Grupo 3: Shopping
+          queries.push(`node["shop"="mall"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+          queries.push(`way["shop"="mall"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
       }
 
       const query = `
@@ -204,6 +209,7 @@ app.get('/api/locais', async (req, res) => {
           else if (tags.amenity === 'cafe') placeType = 'Café';
           else if (tags.leisure === 'fitness_centre') placeType = 'Academia';
           else if (tags.leisure === 'park') placeType = 'Parque';
+          else if (tags.shop === 'mall') placeType = 'Shopping Center';
           else if (tags.amenity) placeType = tags.amenity; // Fallback
 
           let description = 'Um ótimo lugar para socializar.';
@@ -211,6 +217,7 @@ app.get('/api/locais', async (req, res) => {
           else if (placeType === 'Academia') description = 'Bora treinar!';
           else if (placeType === 'Parque') description = 'Natureza e ar livre.';
           else if (placeType === 'Café') description = 'Café quentinho e conversa boa.';
+          else if (placeType === 'Shopping Center') description = 'Compras, lazer e alimentação.';
           else if (tags.description) description = tags.description;
 
           return {
@@ -229,7 +236,7 @@ app.get('/api/locais', async (req, res) => {
       let filteredMocks = LOCAIS;
       if (type && type !== 'all') {
            // Mapeamento simplificado para mocks
-           const typeMap = { 'bar': 'Bar', 'restaurant': 'Restaurante', 'nightclub': 'Boate' };
+           const typeMap = { 'bar': 'Bar', 'restaurant': 'Restaurante', 'nightclub': 'Boate', 'shopping': 'Shopping' };
            if (typeMap[type]) {
                filteredMocks = filteredMocks.filter(l => l.type === typeMap[type]);
            }

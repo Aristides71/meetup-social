@@ -674,6 +674,7 @@ function App() {
                              <option value="cafe">Café</option>
                              <option value="gym">Academia</option>
                              <option value="park">Parque</option>
+                             <option value="shopping">Shopping Center</option>
                          </select>
                      </div>
                      <input 
