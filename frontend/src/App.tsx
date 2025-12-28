@@ -677,14 +677,19 @@ function App() {
                              <option value="shopping">Shopping Center</option>
                          </select>
                      </div>
-                     <input 
-                         type="text" 
-                         placeholder="Nome do local (ex: Starbucks)..." 
-                         className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500"
-                         value={searchKeyword}
-                         onChange={(e) => setSearchKeyword(e.target.value)}
-                         onKeyDown={(e) => e.key === 'Enter' && fetchLocais(undefined, undefined, searchLocation)}
-                     />
+                     <div className="flex gap-2 relative">
+                         <input 
+                             type="text" 
+                             placeholder="Nome do local (ex: Starbucks)..." 
+                             className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500 pr-12"
+                             value={searchKeyword}
+                             onChange={(e) => setSearchKeyword(e.target.value)}
+                             onKeyDown={(e) => e.key === 'Enter' && fetchLocais(undefined, undefined, searchLocation)}
+                         />
+                         <button onClick={() => fetchLocais(undefined, undefined, searchLocation)} className="absolute right-2 top-2 bg-pink-600 text-white w-8 h-8 rounded-lg flex items-center justify-center">
+                            🔍
+                         </button>
+                     </div>
                 </div>
             </div>
 
