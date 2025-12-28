@@ -115,7 +115,7 @@ let games = {}; // localId -> { active: boolean, type: string, currentQuestion: 
 
 // Rotas API
 app.get('/api/locais', async (req, res) => {
-  const { lat, lng, search } = req.query;
+  const { lat, lng, search, type, keyword } = req.query;
 
   // Se não houver coordenadas nem busca, retorna lista vazia
   if (!lat && !lng && !search) {
@@ -145,54 +145,99 @@ app.get('/api/locais', async (req, res) => {
           }
       }
 
-      // Busca locais no Overpass API (Raio de 2km conforme solicitado)
-      const radius = 2000;
+      // Construção dinâmica da query Overpass
+      const radius = 3000; // Aumentei um pouco o raio para 3km
+      
+      let typeFilter = '';
+      if (type === 'bar') typeFilter = '["amenity"~"bar|pub"]';
+      else if (type === 'restaurant') typeFilter = '["amenity"="restaurant"]';
+      else if (type === 'nightclub') typeFilter = '["amenity"="nightclub"]';
+      else if (type === 'cafe') typeFilter = '["amenity"="cafe"]';
+      else if (type === 'gym') typeFilter = '["leisure"="fitness_centre"]';
+      else if (type === 'park') typeFilter = '["leisure"="park"]';
+      else {
+          // Default: busca tudo se não tiver tipo específico
+          // Mas vamos construir queries separadas para amenity e leisure se for "todos"
+      }
+
+      let nameFilter = '';
+      if (keyword && keyword.trim() !== '') {
+          // Filtro por nome (case insensitive)
+          nameFilter = `["name"~"${keyword}",i]`;
+      }
+
+      let queries = [];
+
+      if (typeFilter) {
+          // Se tem tipo específico, é mais simples
+          queries.push(`node${typeFilter}${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+          queries.push(`way${typeFilter}${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+      } else {
+          // Se não tem tipo, busca os grupos padrão
+          // Grupo 1: Amenities (Bar, Restaurante, etc)
+          queries.push(`node["amenity"~"bar|pub|restaurant|nightclub|cafe"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+          queries.push(`way["amenity"~"bar|pub|restaurant|nightclub|cafe"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+          
+          // Grupo 2: Leisure (Academia, Parque)
+          queries.push(`node["leisure"~"fitness_centre|park"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+          queries.push(`way["leisure"~"fitness_centre|park"]${nameFilter}(around:${radius},${searchLat},${searchLng});`);
+      }
+
       const query = `
-        [out:json][timeout:15];
+        [out:json][timeout:25];
         (
-          node["amenity"~"bar|pub|restaurant|nightclub|cafe"](around:${radius},${searchLat},${searchLng});
-          way["amenity"~"bar|pub|restaurant|nightclub|cafe"](around:${radius},${searchLat},${searchLng});
-          node["leisure"~"fitness_centre|park"](around:${radius},${searchLat},${searchLng});
-          way["leisure"~"fitness_centre|park"](around:${radius},${searchLat},${searchLng});
+          ${queries.join('\n')}
         );
-        out center 20;
+        out center 30;
       `;
       
       const overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-      const placesRes = await axios.get(overpassUrl, { timeout: 15000 }); // Timeout aumentado para 15s para suportar raio maior
+      const placesRes = await axios.get(overpassUrl, { timeout: 25000 });
       
       const realPlaces = placesRes.data.elements.map(el => {
           const tags = el.tags || {};
           
-          let type = 'Local';
-          if (tags.amenity === 'nightclub') type = 'Boate';
-          else if (tags.amenity === 'pub' || tags.amenity === 'bar') type = 'Bar';
-          else if (tags.amenity === 'restaurant') type = 'Restaurante';
-          else if (tags.amenity === 'cafe') type = 'Café';
-          else if (tags.leisure === 'fitness_centre') type = 'Academia';
-          else if (tags.leisure === 'park') type = 'Parque';
+          let placeType = 'Local';
+          if (tags.amenity === 'nightclub') placeType = 'Boate';
+          else if (tags.amenity === 'pub' || tags.amenity === 'bar') placeType = 'Bar';
+          else if (tags.amenity === 'restaurant') placeType = 'Restaurante';
+          else if (tags.amenity === 'cafe') placeType = 'Café';
+          else if (tags.leisure === 'fitness_centre') placeType = 'Academia';
+          else if (tags.leisure === 'park') placeType = 'Parque';
+          else if (tags.amenity) placeType = tags.amenity; // Fallback
 
           let description = 'Um ótimo lugar para socializar.';
           if (tags.cuisine) description = `Culinária: ${tags.cuisine}`;
-          else if (type === 'Academia') description = 'Bora treinar!';
-          else if (type === 'Parque') description = 'Natureza e ar livre.';
-          else if (type === 'Café') description = 'Café quentinho e conversa boa.';
+          else if (placeType === 'Academia') description = 'Bora treinar!';
+          else if (placeType === 'Parque') description = 'Natureza e ar livre.';
+          else if (placeType === 'Café') description = 'Café quentinho e conversa boa.';
           else if (tags.description) description = tags.description;
 
           return {
               id: String(el.id),
               name: tags.name || "Local sem nome",
-              type: type,
+              type: placeType,
               description: description
           };
-      }).filter(p => p.name !== "Local sem nome"); // Remove locais sem nome
+      }).filter(p => p.name !== "Local sem nome");
 
       res.json(realPlaces);
 
   } catch (error) {
       console.error("Erro ao buscar locais reais (usando fallback):", error.message);
-      // Fallback: Retorna locais mockados em caso de erro na API externa
-      res.json(LOCAIS);
+      // Fallback: Filtra os locais mockados também se possível
+      let filteredMocks = LOCAIS;
+      if (type && type !== 'all') {
+           // Mapeamento simplificado para mocks
+           const typeMap = { 'bar': 'Bar', 'restaurant': 'Restaurante', 'nightclub': 'Boate' };
+           if (typeMap[type]) {
+               filteredMocks = filteredMocks.filter(l => l.type === typeMap[type]);
+           }
+      }
+      if (keyword) {
+          filteredMocks = filteredMocks.filter(l => l.name.toLowerCase().includes(keyword.toLowerCase()));
+      }
+      res.json(filteredMocks);
   }
 });
 

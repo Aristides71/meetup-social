@@ -86,6 +86,8 @@ function App() {
   
   // Location State
   const [searchLocation, setSearchLocation] = useState('');
+  const [searchType, setSearchType] = useState('all');
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [isLoadingLocais, setIsLoadingLocais] = useState(false);
   
   // Emoji State
@@ -640,18 +642,48 @@ function App() {
                     📍 Usar minha localização
                 </button>
                 
-                <div className="relative">
-                    <input 
-                        type="text" 
-                        placeholder="Ou digite cidade/bairro..." 
-                        className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500"
-                        value={searchLocation}
-                        onChange={(e) => setSearchLocation(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && fetchLocais(undefined, undefined, searchLocation)}
-                    />
-                    <button onClick={() => fetchLocais(undefined, undefined, searchLocation)} className="absolute right-2 top-2 bg-pink-600 text-white w-8 h-8 rounded-lg flex items-center justify-center">
-                        🔍
-                    </button>
+                <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-gray-600">Onde você está?</label>
+                    <div className="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Digite cidade ou bairro..." 
+                            className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500"
+                            value={searchLocation}
+                            onChange={(e) => setSearchLocation(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && fetchLocais(undefined, undefined, searchLocation)}
+                        />
+                        <button onClick={() => fetchLocais(undefined, undefined, searchLocation)} className="absolute right-2 top-2 bg-pink-600 text-white w-8 h-8 rounded-lg flex items-center justify-center">
+                            🔍
+                        </button>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                     <label className="text-sm font-semibold text-gray-600">Refinar busca (Opcional)</label>
+                     <div className="flex gap-2">
+                         <select 
+                             className="p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500 bg-white flex-1"
+                             value={searchType}
+                             onChange={(e) => setSearchType(e.target.value)}
+                         >
+                             <option value="all">Todos os tipos</option>
+                             <option value="bar">Bar / Pub</option>
+                             <option value="restaurant">Restaurante</option>
+                             <option value="nightclub">Boate / Balada</option>
+                             <option value="cafe">Café</option>
+                             <option value="gym">Academia</option>
+                             <option value="park">Parque</option>
+                         </select>
+                     </div>
+                     <input 
+                         type="text" 
+                         placeholder="Nome do local (ex: Starbucks)..." 
+                         className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500"
+                         value={searchKeyword}
+                         onChange={(e) => setSearchKeyword(e.target.value)}
+                         onKeyDown={(e) => e.key === 'Enter' && fetchLocais(undefined, undefined, searchLocation)}
+                     />
                 </div>
             </div>
 
