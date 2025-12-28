@@ -86,6 +86,7 @@ function App() {
   
   // Location State
   const [searchLocation, setSearchLocation] = useState('');
+  const [currentCoords, setCurrentCoords] = useState<{lat: number, lng: number} | null>(null);
   const [searchType, setSearchType] = useState('all');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isLoadingLocais, setIsLoadingLocais] = useState(false);
@@ -251,16 +252,31 @@ function App() {
         return;
     }
     
+    setIsLoadingLocais(true);
     showNotification("Obtendo sua localização...");
     navigator.geolocation.getCurrentPosition(
         (position) => {
-            fetchLocais(position.coords.latitude, position.coords.longitude);
+            const { latitude, longitude } = position.coords;
+            setCurrentCoords({ lat: latitude, lng: longitude });
+            setSearchLocation('');
+            fetchLocais(latitude, longitude);
         },
         (error) => {
             console.error(error);
+            setIsLoadingLocais(false);
             showNotification("Erro ao obter localização. Tente digitar.");
         }
     );
+  };
+
+  const handleRefineSearch = () => {
+    if (searchLocation.trim()) {
+        fetchLocais(undefined, undefined, searchLocation);
+    } else if (currentCoords) {
+        fetchLocais(currentCoords.lat, currentCoords.lng);
+    } else {
+        showNotification("Por favor, digite um local ou use sua localização.");
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -684,9 +700,9 @@ function App() {
                              className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-pink-500 pr-12"
                              value={searchKeyword}
                              onChange={(e) => setSearchKeyword(e.target.value)}
-                             onKeyDown={(e) => e.key === 'Enter' && fetchLocais(undefined, undefined, searchLocation)}
+                             onKeyDown={(e) => e.key === 'Enter' && handleRefineSearch()}
                          />
-                         <button onClick={() => fetchLocais(undefined, undefined, searchLocation)} className="absolute right-2 top-2 bg-pink-600 text-white w-8 h-8 rounded-lg flex items-center justify-center">
+                         <button onClick={handleRefineSearch} className="absolute right-2 top-2 bg-pink-600 text-white w-8 h-8 rounded-lg flex items-center justify-center">
                             🔍
                          </button>
                      </div>

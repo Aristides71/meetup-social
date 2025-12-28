@@ -149,13 +149,13 @@ app.get('/api/locais', async (req, res) => {
       const radius = 3000; // Aumentei um pouco o raio para 3km
       
       let typeFilter = '';
-      if (type === 'bar') typeFilter = '["amenity"~"bar|pub"]';
-      else if (type === 'restaurant') typeFilter = '["amenity"="restaurant"]';
-      else if (type === 'nightclub') typeFilter = '["amenity"="nightclub"]';
-      else if (type === 'cafe') typeFilter = '["amenity"="cafe"]';
+      if (type === 'bar') typeFilter = '["amenity"~"bar|pub|biergarten"]';
+      else if (type === 'restaurant') typeFilter = '["amenity"~"restaurant|fast_food|food_court|bistro"]';
+      else if (type === 'nightclub') typeFilter = '["amenity"~"nightclub|social_club"]';
+      else if (type === 'cafe') typeFilter = '["amenity"~"cafe|ice_cream"]';
       else if (type === 'gym') typeFilter = '["leisure"="fitness_centre"]';
       else if (type === 'park') typeFilter = '["leisure"="park"]';
-      else if (type === 'shopping') typeFilter = '["shop"="mall"]';
+      else if (type === 'shopping') typeFilter = '["shop"~"mall|department_store"]';
       else {
           // Default: busca tudo se não tiver tipo específico
           // Mas vamos construir queries separadas para amenity e leisure se for "todos"
