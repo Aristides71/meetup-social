@@ -814,6 +814,10 @@ function App() {
           </div>
         )}
       </main>
+
+      <footer className="p-4 text-center text-gray-400 text-sm mt-auto">
+        &copy; {new Date().getFullYear()} Todos os direitos reservados Agomes.pro
+      </footer>
     </div>
   );
 }
